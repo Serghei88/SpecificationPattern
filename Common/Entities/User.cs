@@ -2,8 +2,8 @@
 
 public class User
 {
-    public long Id { get; private set; }
-    public string Name { get; private set; }
-    public int Height { get; private set; }
-    public int Age { get; private set; }
+    public long Id { get;  set; }
+    public string Name { get;  set; }
+    public int Height { get;  set; }
+    public int Age { get;  set; }
 }

@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Repository.LiteDb;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -7,7 +10,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<DataContext>(options =>
+        options.UseSqlite(builder.Configuration.GetConnectionString("WebApiDatabase"), 
+            b => b.MigrationsAssembly("WebApi")));
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
@@ -19,4 +26,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
+app.UseEndpoints(builder => { builder.MapControllers(); });
+
 app.Run();

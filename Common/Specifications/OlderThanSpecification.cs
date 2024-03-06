@@ -3,4 +3,4 @@
 namespace Common.Specifications;
 
 public class OlderThanSpecification(int threshold) : 
-    ExpressionSpecification<User>(u => u.Age < threshold);
+    ExpressionSpecification<User>(u => u.Age > threshold);

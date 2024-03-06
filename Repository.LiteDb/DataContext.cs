@@ -6,18 +6,10 @@ namespace Repository.LiteDb;
 
 public class DataContext : DbContext
 {
-    protected readonly IConfiguration Configuration;
-
-    public DataContext(IConfiguration configuration)
+    public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        Configuration = configuration;
+        modelBuilder.Seed();
     }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-    {
-        // connect to sqlite database
-        options.UseSqlite(Configuration.GetConnectionString("WebApiDatabase"));
-    }
-
     public DbSet<User> Users { get; set; }
 }

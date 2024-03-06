@@ -9,18 +9,20 @@ using Repository.LiteDb.Entities;
 
 namespace WebApi.Controllers;
 
-public class UserController: ControllerBase
+[ApiController]
+[Route("[controller]")]
+public class UsersController: ControllerBase
 {
     private readonly DataContext _dataContext;
     private readonly IUserRepository _userRepository;
 
-    public UserController(DataContext dataContext, IUserRepository userRepository)
+    public UsersController(DataContext dataContext, IUserRepository userRepository)
     {
         _dataContext = dataContext;
         _userRepository = userRepository;
     }
     
-    [HttpGet("users/in-age-range")]
+    [HttpGet("in-age-range")]
     public IActionResult InAgeRange([FromQuery] int olderThan, [FromQuery] int youngerThan)
     {
         ExpressionSpecification<User> specification
@@ -33,7 +35,7 @@ public class UserController: ControllerBase
         return StatusCode((int) HttpStatusCode.OK, new {totalCount = users.Count, users});
     }
     
-    [HttpGet("users/fetch-with-queryable-extension")]
+    [HttpGet("fetch-with-queryable-extension")]
     public async Task<IActionResult> FetchWithQueryableExtension([FromQuery] int? olderThan, [FromQuery] int? youngerThan)
     {
         IQueryable<User> userModels = _dataContext.Users.AsQueryable();
