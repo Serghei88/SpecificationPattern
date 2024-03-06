@@ -2,11 +2,11 @@
 
 namespace Common;
 
-public abstract class ExpressionSpecification<T> : ISpecification<T>
+public  class ExpressionSpecification<T> : ISpecification<T>
 {
     public Expression<Func<T, bool>> Expression { get; }
 
-    protected ExpressionSpecification(Expression<Func<T, bool>> expression)
+    public ExpressionSpecification(Expression<Func<T, bool>> expression)
     {
         Expression = expression;
     }

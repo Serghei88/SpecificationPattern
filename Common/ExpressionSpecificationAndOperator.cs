@@ -2,10 +2,10 @@
 
 namespace Common;
 
-internal class ExpressionSpecificationAndOperator : IExpressionSpecificationOperator
+internal class ExpressionSpecificationAndOperator
 {
     // https://stackoverflow.com/questions/457316/combining-two-expressions-expressionfunct-bool
-    public ExpressionSpecification<TModel> Combine<TModel>(ExpressionSpecification<TModel> left, ExpressionSpecification<TModel> right)
+    public static ExpressionSpecification<TModel> Combine<TModel>(ExpressionSpecification<TModel> left, ExpressionSpecification<TModel> right)
     {
         Expression<Func<TModel, bool>> resultExpression;
         ParameterExpression param = left.Expression.Parameters[0];
@@ -22,7 +22,7 @@ internal class ExpressionSpecificationAndOperator : IExpressionSpecificationOper
                     Expression.Invoke(right.Expression, param)), param);
         }
 
-        var combinedSpecification = new DynamicExpressionSpecification<TModel>(resultExpression);
+        var combinedSpecification = new ExpressionSpecification<TModel>(resultExpression);
         return combinedSpecification;
     }
 }
@@ -31,8 +31,7 @@ public static class ExpressionSpecificationAndOperatorExtension
 {
     public static ExpressionSpecification<T> And<T>(this ExpressionSpecification<T> specificationLeft, ExpressionSpecification<T> specificationRight)
     {
-        var specificationAndOperator = new ExpressionSpecificationAndOperator();
-        ExpressionSpecification<T> expressionSpecification = specificationAndOperator.Combine(specificationLeft, specificationRight);
+        ExpressionSpecification<T> expressionSpecification = ExpressionSpecificationAndOperator.Combine(specificationLeft, specificationRight);
         return expressionSpecification;
     }
 }
