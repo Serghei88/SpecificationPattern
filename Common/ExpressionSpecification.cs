@@ -6,8 +6,6 @@ public abstract class ExpressionSpecification<T> : ISpecification<T>
 {
     public Expression<Func<T, bool>> Expression { get; }
 
-    private Func<T, bool> ExpressionFunc { get; }
-
     protected ExpressionSpecification(Expression<Func<T, bool>> expression)
     {
         Expression = expression;
@@ -15,7 +13,7 @@ public abstract class ExpressionSpecification<T> : ISpecification<T>
 
     public bool IsSatisfied(T obj)
     {
-        bool result = ExpressionFunc(obj);
+        bool result = Expression.Compile().Invoke(obj);
         return result;
     }
 }
